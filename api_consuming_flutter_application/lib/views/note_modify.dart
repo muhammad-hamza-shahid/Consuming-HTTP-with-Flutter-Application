@@ -1,4 +1,5 @@
 import 'package:api_consuming_flutter_application/models/note.dart';
+import 'package:api_consuming_flutter_application/models/note_insert.dart';
 import 'package:api_consuming_flutter_application/services/notes_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -76,13 +77,47 @@ class _NoteModifyState extends State<NoteModify> {
                         style: TextStyle(color: Colors.white),
                       ),
                       color: Theme.of(context).primaryColor,
-                      onPressed: () {
+                      onPressed: () async {
                         if (isEditing) {
-                          //updat in API
+                          //update in API
                         } else {
                           //Create note in API
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          final note = NoteInsert(
+                            noteTitle: _titleController.text,
+                            noteContent: _contentController.text,
+                          );
+
+                          final result = await notesService.createNote(note);
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          final title = 'done';
+                          final text = result.error
+                              ? (result.errorMessage ?? "An error ocured")
+                              : 'Your note is created';
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                      title: Text(title),
+                                      content: Text(text),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Ok"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ])).then((data) {
+                                        if(result.data){
+                                          Navigator.of(context).pop();
+                                        }
+                                      });
                         }
-                        Navigator.of(context).pop();
+                       // Navigator.of(context).pop();
                       },
                     ),
                   )
