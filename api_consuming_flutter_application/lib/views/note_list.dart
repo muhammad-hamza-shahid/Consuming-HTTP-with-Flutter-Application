@@ -32,6 +32,7 @@ class _NoteListState extends State<NoteList> {
     });
 
     _apiResponce = await service.getNotesList();
+    
     setState(() {
       _isLoading = false;
     });
@@ -96,7 +97,9 @@ class _NoteListState extends State<NoteList> {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => NoteModify(
                                 noteID: _apiResponce.data[index].noteId,
-                              )));
+                              ))).then((value) {
+                                _fetchNotes();
+                              });
                     },
                   ),
                 );
