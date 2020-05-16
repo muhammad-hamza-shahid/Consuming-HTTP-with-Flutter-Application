@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'note_for_listing.g.dart';
+
+@JsonSerializable()
 class NoteForListing{
   String noteId;
   String noteTitle;

@@ -67,4 +67,17 @@ class NotesService {
     }).catchError((_) =>
             APIResponce<bool>(error: true, errorMessage: 'An Error Occured'));
   }
+
+  Future<APIResponce<bool>> deleteNote(String noteID) {
+    return http
+        .delete(API + '/notes/'+noteID,
+            headers: headers,)
+        .then((data) {
+      if (data.statusCode == 204) {
+        return APIResponce<bool>(data: true);
+      }
+      return APIResponce<bool>(error: true, errorMessage: 'An Error Occured');
+    }).catchError((_) =>
+            APIResponce<bool>(error: true, errorMessage: 'An Error Occured'));
+  }
 }
