@@ -96,6 +96,7 @@ class _NoteListState extends State<NoteList> {
                                     child: Text('OK'),
                                     onPressed: () {
                                       Navigator.of(context).pop();
+                                      _fetchNotes();
                                     },
                                   )
                                 ],
